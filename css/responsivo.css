@@ -1,0 +1,30 @@
+
+
+/* ==================== RESPONSIVIDADE ==================== */
+@media (max-width: 768px) {
+    main.container {
+        margin: 20px;
+        padding: 20px;
+    }
+
+    main h1 {
+        font-size: 2rem;
+    }
+
+    .procurar-form {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .procurar-botao {
+        width: 100%;
+    }
+
+    .receita-lista {
+        grid-template-columns: 1fr;
+    }
+
+    .receita-card img {
+        height: 200px;
+    }
+}

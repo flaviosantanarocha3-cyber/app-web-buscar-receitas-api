@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Título e SEO Básico -->
+    <title>Buscador de Receitas | Encontre Pratos Fáceis e Deliciosos</title>
+    <meta name="description" content="Descubra receitas incríveis por ingredientes ou nome do prato. Encontre opções fáceis, rápidas, doces, salgadas e saudáveis para o seu dia a dia.">
+    <meta name="keywords" content="receitas, buscador de receitas, culinária, gastronomia, receitas fáceis, receitas rápidas, comida, cozinhar por ingredientes">
+    <meta name="author" content="Flávio Santana">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#FF6B35"> <!-- Cor laranja apetitosa para a barra do navegador mobile -->
+
+    <!-- Open Graph / Redes Sociais (WhatsApp, Facebook, LinkedIn) -->
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="pt_BR">
+    <meta property="og:site_name" content="Buscador de Receitas">
+    <meta property="og:title" content="Buscador de Receitas | O que vamos cozinhar hoje?">
+    <meta property="og:description" content="Pesquise milhares de receitas por nome ou ingredientes que você já tem em casa.">
+    <!-- Substitua pelos links reais do seu deploy (Vercel/GitHub Pages) e da imagem de preview -->
+    <meta property="og:url" content="https://seu-dominio.vercel.app/">
+    <meta property="og:image" content="https://seu-dominio.vercel.app/assets/preview-receitas.jpg">
+    <meta property="og:image:alt" content="Interface do aplicativo Buscador de Receitas com pratos variados">
+
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Buscador de Receitas | Encontre Pratos Fáceis e Deliciosos">
+    <meta name="twitter:description" content="Pesquise milhares de receitas por nome ou ingredientes que você já tem em casa.">
+    <meta name="twitter:image" content="https://seu-dominio.vercel.app/assets/preview-receitas.jpg">
+
+    <!-- Ícone da Aba (Favicon) -->
+    <link rel="icon" type="image/png" href="./assets/favicon.png">
+
+    <title>Buscador de Receitas</title>
+    
+    <link rel="stylesheet" href="./css/geral.css">
+    <link rel="stylesheet" href="./css/hero.css">
+    <link rel="stylesheet" href="./css/sections.css">
+    <link rel="stylesheet" href="./css/footer.css">
+    <link rel="stylesheet" href="./css/responsivo.css">
+    
+
+</head>
+
+<body>
+    <main class="container">
+        <h1>Buscador de Receitas</h1>
+        <form class="procurar-form">
+            <input type="text" placeholder="Digite o ingrediente" class="procurar-input">
+            <button class="procurar-botao" type="submit">Buscar</button>
+        </form>
+
+        <div class="loading"></div>
+        <div class="receita-lista"></div>
+        <div class="receita-detalhes"></div>
+    </main>
+
+    <footer>
+        <p>© 2026 Buscador de Receitas - Todos os direitos reservados</p>
+    </footer>
+
+    <script src="./js/script.js"></script>
+
+</body>
+
+</html>
