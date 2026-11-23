@@ -1,9 +1,9 @@
 
-
 const input = document.querySelector('.procurar-input');
 const form = document.querySelector('.procurar-form');
 const receitaLista = document.querySelector('.receita-lista');
 const receitaDetalhes = document.querySelector('.receita-detalhes');
+
 const dicionarioIngredientes = {
     // --- Proteínas e Carnes ---
     "frango": "chicken",
@@ -89,7 +89,7 @@ const dicionarioIngredientes = {
     "limao": "lemon",
     "morango": "strawberry",
     "abacaxi": "pineapple",
-    "manga": "mango", // Evita traduzir errado para "sleeve" (manga de roupa)
+    "manga": "mango",
     "abacate": "avocado",
     "maracuja": "passion fruit",
     "coco": "coconut",
@@ -112,7 +112,7 @@ const dicionarioIngredientes = {
     "mel": "honey",
     "cafe": "coffee",
     "canela": "cinnamon",
-    "cravo": "clove", // Evita traduzir errado para "nail" (prego/cravo)
+    "cravo": "clove",
     "oregano": "oregano",
     "manjericao": "basil",
     "salsinha": "parsley",
@@ -127,57 +127,73 @@ const dicionarioIngredientes = {
     "nozes": "walnuts"
 };
 
-function limparPalavra(texto) {
+function limparPalavra(texto = '') {
     return texto
-        .toLowerCase()                      // "FRANGO" -> "frango"
-        .trim()                             // " frango " -> "frango"
-        .normalize("NFD")                   // Separa o acento da letra ("ã" -> "a" + "~")
-        .replace(/\p{M}/gu, "");   // Apaga o acento ("limão" -> "limao")
+        .toLowerCase()
+        .trim()
+        .normalize("NFD")
+        .replace(/\p{M}/gu, "");
+}
+
+function removerTagsHTML(html = '') {
+    const temp = document.createElement('div');
+    temp.innerHTML = html;
+    return temp.textContent || temp.innerText || '';
 }
 
 form.addEventListener('submit', function (evento) {
     evento.preventDefault();
-    const inputValue = evento.target[0].value;
+    const valorDigitado = input ? input.value : evento.target[0]?.value;
 
-    // Chama a função passando o valor digitado
-    procurarReceitas(inputValue);
-})
+    if (!valorDigitado || !valorDigitado.trim()) {
+        receitaLista.innerHTML = `<p>Digite um ingrediente para buscar.</p>`;
+        return;
+    }
 
-// Função Auxiliar de Tradução (fica no topo para poder ser usada por qualquer outra função)
+    procurarReceitas(valorDigitado);
+});
+
 async function traduzir(texto, idiomaOrigem = 'en', idiomaDestino = 'pt') {
     if (!texto) return '';
     try {
         const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${idiomaOrigem}&tl=${idiomaDestino}&dt=t&q=${encodeURIComponent(texto)}`;
         const res = await fetch(url);
+        if (!res.ok) return texto;
+
         const dados = await res.json();
-        return dados[0].map(item => item[0]).join('');
+        if (!Array.isArray(dados) || !Array.isArray(dados[0])) return texto;
+
+        return dados[0]
+            .map(item => (Array.isArray(item) ? item[0] : ''))
+            .join('');
     } catch (erro) {
-        return texto; // Se falhar a conexão, devolve o texto original sem quebrar o site
+        return texto;
     }
 }
 
-// Função procurar receitas no servidor
 async function procurarReceitas(ingrediente) {
+    receitaLista.innerHTML = `<p>Buscando receitas...</p>`;
     try {
-        // 1. Limpa o que o usuário digitou 
         const palavraLimpa = limparPalavra(ingrediente);
 
-        // 2. Consulta a variável dicionarioIngredientes; se não achar, usa a tradução PT -> EN
         const termoBusca = dicionarioIngredientes[palavraLimpa]
             ? dicionarioIngredientes[palavraLimpa]
             : await traduzir(palavraLimpa, 'pt', 'en');
 
-        // 3. Envia o termo já convertido/traduzido para a rota da Vercel
         const resposta = await fetch(`/api/receitas?q=${encodeURIComponent(termoBusca)}`);
+        if (!resposta.ok) {
+            throw new Error(`Erro HTTP ${resposta.status}`);
+        }
+
         const dados = await resposta.json();
 
-        // Spoonacular retorna o array em 'results'
         if (dados.results && dados.results.length > 0) {
             mostrarReceitas(dados.results);
         } else {
             receitaLista.innerHTML = `<p>Nenhuma receita encontrada</p>`;
         }
     } catch (err) {
+        console.error('Erro em procurarReceitas:', err);
         receitaLista.innerHTML = `<p>Erro ao buscar receitas. Tente novamente.</p>`;
     }
 }
@@ -192,39 +208,48 @@ function mostrarReceitas(receitas) {
 }
 
 async function pegarDetalhesReceita(id) {
-    // Chama a rota de detalhes na Vercel passando o id da receita
-    const resposta = await fetch(`/api/detalhes?id=${encodeURIComponent(id)}`);
-    const detalheReceita = await resposta.json();
-
-    // 1. Traduz as Instruções
-    const textoIngles = detalheReceita.instructions || 'No instructions available.';
-    const instrucoesPT = await traduzir(textoIngles);
-
-    // 2. Traduz os Ingredientes (trocado .forEach por for...of)
-    let ingredientes = '';
-
-    if (detalheReceita.extendedIngredients) {
-        for (const item of detalheReceita.extendedIngredients) {
-            const ingredienteTraduzido = await traduzir(item.original);
-            ingredientes += `<li>${ingredienteTraduzido}</li>`;
+    try {
+        const resposta = await fetch(`/api/detalhes?id=${encodeURIComponent(id)}`);
+        if (!resposta.ok) {
+            throw new Error(`Erro HTTP ${resposta.status}`);
         }
+
+        const detalheReceita = await resposta.json();
+
+        const instrucoesLimpa = removerTagsHTML(detalheReceita.instructions || 'No instructions available.');
+        const instrucoesPT = await traduzir(instrucoesLimpa, 'en', 'pt');
+
+        let ingredientesHTML = '';
+        if (Array.isArray(detalheReceita.extendedIngredients)) {
+            const traduzidos = await Promise.all(
+                detalheReceita.extendedIngredients.map(item => traduzir(item.original, 'en', 'pt'))
+            );
+            ingredientesHTML = traduzidos
+                .map(ing => `<li>${ing}</li>`)
+                .join('');
+        }
+
+        receitaDetalhes.innerHTML = `
+            <button class="fechar-detalhes" onclick="fecharDetalhes()">✕ Fechar</button>
+            <h2>${detalheReceita.title || 'Receita'}</h2>
+            ${detalheReceita.image ? `<img src="${detalheReceita.image}" alt="${detalheReceita.title}" class="receita-img">` : ''}
+            <h3>Tempo de Preparo: ${detalheReceita.readyInMinutes ?? '-'} minutos</h3>
+            <h3>Rendimento: ${detalheReceita.servings ?? '-'} porções</h3>
+            <h3>Ingredientes:</h3>
+            <ul>${ingredientesHTML}</ul>
+            <h3>Modo de Preparo:</h3>
+            <p>${instrucoesPT}</p>
+        `;
+
+        receitaDetalhes.classList.add('active');
+    } catch (err) {
+        console.error('Erro em pegarDetalhesReceita:', err);
+        receitaDetalhes.innerHTML = `
+            <button class="fechar-detalhes" onclick="fecharDetalhes()">✕ Fechar</button>
+            <p>Não foi possível carregar os detalhes da receita agora.</p>
+        `;
+        receitaDetalhes.classList.add('active');
     }
-
-    // 3. Atualiza o HTML com as variáveis traduzidas (instrucoesPT)
-    receitaDetalhes.innerHTML = `
-        <button class="fechar-detalhes" onclick="fecharDetalhes()">✕ Fechar</button>
-        <h2>${detalheReceita.title}</h2>
-        <img src="${detalheReceita.image}" alt="${detalheReceita.title}" class="receita-img">
-        <h3>Tempo de Preparo: ${detalheReceita.readyInMinutes} minutos</h3>
-        <h3>Rendimento: ${detalheReceita.servings} porções</h3>
-        <h3>Ingredientes:</h3>
-        <ul>${ingredientes}</ul>
-        <h3>Modo de Preparo:</h3>
-        <p>${instrucoesPT}</p>
-    `;
-
-    // Torna o elemento visível adicionando a classe active
-    receitaDetalhes.classList.add('active');
 }
 
 function fecharDetalhes() {
