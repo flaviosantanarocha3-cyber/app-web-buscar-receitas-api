@@ -1,14 +1,21 @@
 
-/* ==================== FOOTER ==================== */
-footer {
-    text-align: center;
-    padding: 30px;
-    margin-top: 50px;
-    background-color: #1f1f1f;
-    color: #888;
-    border-top: 1px solid #3d3d3d;
+/* ==========================================================================
+   03. FOOTER
+   ========================================================================== */
+
+/* Variáveis adicionais desta seção (unir ao :root principal quando juntar os arquivos) */
+:root {
+    --color-footer-bg: #1f1f1f;
+    --color-footer-text: #888;
+    --color-border-subtle: #3d3d3d;
 }
 
-footer p {
-    font-size: 1.2rem;
+footer {
+    text-align: center;
+    padding: 1.5rem;
+    margin-top: .25rem;
+    background-color: var(--color-footer-bg);
+    color: var(--color-footer-text);
+    border-top: 1px solid var(--color-border-subtle);
 }
+

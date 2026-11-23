@@ -1,187 +1,261 @@
 
 
+/* ==========================================================================
+   VARIÁVEIS DE CORES
+   ========================================================================== */
+:root {
+    /* Cores principais */
+    --cor-destaque: #ff6b35;
+    --cor-destaque-hover: #ff8c5a;
+    --cor-destaque-sombra-fraca: rgba(255, 107, 53, 0.2);
+    --cor-destaque-sombra-media: rgba(255, 107, 53, 0.3);
+    --cor-destaque-sombra-forte: rgba(255, 107, 53, 0.4);
+
+    /* Superfícies, bordas e textos */
+    --cor-superficie: #1f1f1f;
+    --cor-superficie-input: #2d2d2d;
+    --cor-borda: #3d3d3d;
+    --cor-texto-claro: #e0e0e0;
+    --cor-texto-escuro: #1a1a1a;
+    --cor-texto-muted: #999;
+    --cor-placeholder: #888;
+}
+
+
+/* ==========================================================================
+   REGRAS COMPARTILHADAS (VALORES REPETIDOS)
+   ========================================================================== */
+
+/* Containers / cards escuros com borda */
+.procurar-form,
+.receita-card,
+.receita-detalhes {
+    background-color: var(--cor-superficie);
+    border: 1px solid var(--cor-borda);
+}
+
+/* Cards / áreas expandidas com raio de 12px */
+.receita-card,
+.receita-detalhes {
+    border-radius: 8px;
+}
+
+/* Elementos com border-radius de 8px */
+.procurar-form,
+.procurar-input,
+.procurar-botao,
+.receita-card img {
+    border-radius: 8px;
+}
+
+/* Elementos ocultos até receberem .active */
+.loading,
+.receita-detalhes {
+    display: none;
+}
+
+.loading.active,
+.receita-detalhes.active {
+    display: block;
+}
+
+/* Botões de ação em destaque */
+.procurar-botao,
+.fechar-detalhes {
+    background-color: var(--cor-destaque);
+    color: var(--cor-texto-escuro);
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+
+.procurar-botao:hover,
+.fechar-detalhes:hover {
+    background-color: var(--cor-destaque-hover);
+}
+
+/* Elementos interativos com transição suave */
+.procurar-input,
+.receita-card {
+    transition: all 0.3s;
+}
+
+/* Imagens responsivas de largura total */
+.receita-card img,
+.receita-detalhes img {
+    width: 100%;
+}
+
+/* Títulos em cor de destaque */
+.receita-card h3,
+.loading,
+.receita-detalhes h2,
+.receita-detalhes h3 {
+    color: var(--cor-destaque);
+}
+
+/* Tamanhos de fonte compartilhados */
+.procurar-input,
+.loading,
+.procurar-botao,
+.receita-detalhes h3 {
+    font-size: 1.6rem;
+}
+
+.receita-card h3,
+.receita-detalhes p,
+.receita-detalhes ul {
+    font-size: 1.4rem;
+}
+
+.receita-card p,
+.fechar-detalhes {
+    font-size: 1.2rem;
+}
+
+/* Textos claros e espaçamento inferior de blocos de leitura nos detalhes */
+.receita-detalhes p,
+.receita-detalhes ul {
+    color: var(--cor-texto-claro);
+    margin-bottom: 1rem;
+}
+
+
 /* ==================== SECTION - BUSCA ==================== */
 .procurar-form {
     display: flex;
-    gap: 15px;
-    margin-bottom: 30px;
-    background-color: #1f1f1f;
-    padding: 20px;
-    border-radius: 10px;
-    border: 1px solid #3d3d3d;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
 }
 
 .procurar-input {
     flex-grow: 1;
-    padding: 15px;
-    border-radius: 8px;
-    border: 2px solid #3d3d3d;
-    background-color: #2d2d2d;
-    color: #e0e0e0;
-    font-size: 1.6rem;
-    transition: border-color 0.3s, box-shadow 0.3s;
+    padding: 1rem;
+    border: 2px solid var(--cor-borda);
+    background-color: var(--cor-superficie-input);
+    color: var(--cor-texto-claro);
 }
 
 .procurar-input:focus {
-    border-color: #ff6b35;
-    box-shadow: 0 0 10px rgba(255, 107, 53, 0.3);
+    border-color: var(--cor-destaque);
+    box-shadow: 0 0 10px var(--cor-destaque-sombra-media);
 }
 
 .procurar-input::placeholder {
-    color: #888;
+    color: var(--cor-placeholder);
 }
 
 .procurar-botao {
-    padding: 15px 30px;
-    background-color: #ff6b35;
-    color: #1a1a1a;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 1.6rem;
-    font-weight: bold;
-    transition: all 0.3s;
+    padding: 1rem 2rem;
     text-transform: uppercase;
     letter-spacing: 1px;
 }
 
 .procurar-botao:hover {
-    background-color: #ff8c5a;
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(255, 107, 53, 0.4);
+    box-shadow: 0 5px 15px var(--cor-destaque-sombra-forte);
 }
 
 .procurar-botao:active {
     transform: translateY(0);
 }
 
+
 /* ==================== SECTION - RESULTADOS ==================== */
 .receita-lista {
     display: grid;
-    gap: 25px;
+    gap: 1.5rem;
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
 }
 
-.receita-card {
-    background-color: #1f1f1f;
-    border: 1px solid #3d3d3d;
-    border-radius: 12px;
-    padding: 15px;
+.receita-lista p {
+    grid-column: 1 / -1; /* Faz o parágrafo ocupar da primeira até a última coluna do grid */
     text-align: center;
-    cursor: pointer;
-    transition: all 0.3s;
+    padding: 16px;
+}
+
+.receita-card {
+    padding: 1rem;
+    text-align: center;
     overflow: hidden;
 }
 
 .receita-card:hover {
     transform: translateY(-5px);
-    border-color: #ff6b35;
-    box-shadow: 0 10px 25px rgba(255, 107, 53, 0.2);
+    border-color: var(--cor-destaque);
+    box-shadow: 0 10px 25px var(--cor-destaque-sombra-fraca);
 }
 
 .receita-card img {
-    width: 100%;
-    height: 160px;
+    height: 10rem;
     object-fit: cover;
-    border-radius: 8px;
-    margin-bottom: 15px;
+    margin-bottom: 1rem;
 }
 
 .receita-card h3 {
-    color: #ff6b35;
-    font-size: 1.4rem;
     margin-bottom: 10px;
 }
 
 .receita-card p {
-    color: #999;
-    font-size: 1.2rem;
+    color: var(--cor-texto-muted);
 }
+
 
 /* ==================== LOADING ==================== */
 .loading {
     text-align: center;
-    padding: 20px;
-    color: #ff6b35;
-    font-size: 1.6rem;
-    display: none;
+    padding: 1.5rem;
 }
 
-.loading.active {
-    display: block;
-}
 
 /* ==================== DETALHES ==================== */
 .receita-detalhes {
-    background-color: #1f1f1f;
-    border: 1px solid #3d3d3d;
-    border-radius: 12px;
-    padding: 25px;
-    margin-top: 30px;
-    display: none;
+    padding: 1.5rem;
+    margin-top: 2rem;
     position: relative;
-}
-
-.receita-detalhes.active {
-    display: block;
+    text-align: justify;
 }
 
 .fechar-detalhes {
     position: absolute;
-    top: 15px;
-    right: 15px;
-    background-color: #ff6b35;
-    color: #1a1a1a;
-    border: none;
-    border-radius: 5px;
-    padding: 8px 15px;
-    cursor: pointer;
-    font-size: 1.2rem;
-    font-weight: bold;
-    transition: all 0.3s;
+    top: 1rem;
+    right: 1rem;
+    border-radius: .3125rem;
+    padding: .5rem 1rem;
 }
 
 .fechar-detalhes:hover {
-    background-color: #ff8c5a;
     transform: scale(1.05);
 }
 
 .receita-detalhes h2 {
-    color: #ff6b35;
     font-size: 2rem;
-    margin-bottom: 20px;
-    padding-right: 80px;
+    margin-bottom: 1.5rem;
+    padding-right: 5rem;
 }
 
 .receita-detalhes img {
-    width: 100%;
-    max-width: 400px;
+    max-width: 25rem;
     height: auto;
-    border-radius: 10px;
-    margin: 20px auto;
+    border-radius: 8px;
+    margin: 1rem auto;
     display: block;
 }
 
 .receita-detalhes h3 {
-    color: #ff6b35;
-    font-size: 1.6rem;
-    margin: 20px 0 10px 0;
+    margin: 1.5rem 0 8px 0;
 }
 
 .receita-detalhes p {
-    color: #e0e0e0;
-    font-size: 1.4rem;
     line-height: 1.8;
-    margin-bottom: 15px;
 }
 
 .receita-detalhes ul {
-    color: #e0e0e0;
-    font-size: 1.4rem;
-    margin-left: 20px;
-    margin-bottom: 15px;
+    margin-left: 1.5rem;
 }
 
 .receita-detalhes li {
-    margin-bottom: 8px;
+    margin-bottom: .5rem;
 }

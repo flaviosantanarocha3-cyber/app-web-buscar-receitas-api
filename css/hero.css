@@ -1,20 +1,36 @@
+/* ==========================================================================
+   04. MAIN
+   ========================================================================== */
 
-/* ==================== MAIN ==================== */
+/* Variáveis adicionais desta seção (unir ao :root principal quando juntar os arquivos) */
+:root {
+    --color-surface-card: #2d2d2d;
+    --color-accent-primary: #ff6b35;
+    --color-border-subtle: #3d3d3d; /* Adicionada pois era referenciada sem definição no bloco */
+    --shadow-card: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+/* Base para parágrafos (h1 fica acima com tamanho específico do main) */
+p {
+    font-size: 1rem;
+    text-align: justify;
+}
+
 main.container {
     max-width: 800px;
-    margin: 40px auto;
-    background-color: #2d2d2d;
-    padding: 30px;
-    border-radius: 15px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-    border: 1px solid #3d3d3d;
+    margin: 2.5rem auto;
+    padding: 2rem;
+    background-color: var(--color-surface-card);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: 1rem;
+    box-shadow: var(--shadow-card);
 }
 
 main h1 {
-    text-align: center;
-    color: #ff6b35;
+    color: var(--color-accent-primary);
     font-size: 2.5rem;
-    margin-bottom: 30px;
+    margin-bottom: 2rem;
+    text-align: justify; 
     text-transform: uppercase;
     letter-spacing: 2px;
 }

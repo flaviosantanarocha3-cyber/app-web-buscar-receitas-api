@@ -1,10 +1,50 @@
 
-
 /* ==================== RESPONSIVIDADE ==================== */
+
+/* Telas grandes / desktops menores (até 1200px) */
+@media (max-width: 1200px) {
+    main.container {
+        margin: 1.5rem;
+        padding: 1.5rem;
+    }
+
+    .receita-lista {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 16px;
+    }
+}
+
+/* Tablets em paisagem / notebooks pequenos (até 991px) */
+@media (max-width: 991px) {
+    main.container {
+        margin: 1.5rem;
+        padding: 1.5rem;
+    }
+
+    main h1 {
+        font-size: 2.2rem;
+    }
+
+    .procurar-input,
+    .procurar-botao {
+        font-size: 1.4rem;
+    }
+
+    .receita-lista {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+
+    .receita-detalhes {
+        padding: 1.5rem;
+    }
+}
+
+/* Tablets em retrato (até 768px) */
 @media (max-width: 768px) {
     main.container {
-        margin: 20px;
-        padding: 20px;
+        margin: 1.5rem;
+        padding: 1.5rem;
     }
 
     main h1 {
@@ -13,7 +53,7 @@
 
     .procurar-form {
         flex-direction: column;
-        gap: 10px;
+        gap: 8px;
     }
 
     .procurar-botao {
@@ -26,5 +66,139 @@
 
     .receita-card img {
         height: 200px;
+    }
+}
+
+/* Smartphones grandes / phablets (até 560px) */
+@media (max-width: 560px) {
+    main.container {
+        margin: 1rem;
+        padding: 1rem;
+    }
+
+    main h1 {
+        font-size: 1.8rem;
+    }
+
+    .procurar-form {
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .procurar-input,
+    .procurar-botao {
+        font-size: 1.3rem;
+        padding: .5rem 1rem;
+    }
+
+    .receita-card {
+        padding: 12px;
+    }
+
+    .receita-card img {
+        height: 11.5rem;
+    }
+
+    .receita-detalhes {
+        padding: 1rem;
+        margin-top: 1.5rem;
+    }
+
+    .receita-detalhes h2 {
+        font-size: 1.7rem;
+        padding-right: 0;
+        margin-top: 2.25rem; /* Evita sobreposição com o botão fechar absoluto */
+    }
+}
+
+/* Smartphones padrão (até 480px) */
+@media (max-width: 480px) {
+    main.container {
+        margin: .5rem;
+        padding: .5rem;
+    }
+
+    main h1 {
+        font-size: 1.6rem;
+    }
+
+    .procurar-form {
+        padding: .5rem;
+        gap: .5rem;
+    }
+
+    .procurar-input,
+    .procurar-botao {
+        font-size: 1.2rem;
+        padding: .5rem 1rem;
+    }
+
+    .receita-lista {
+        gap: 1rem;
+    }
+
+    .receita-card img {
+        height: 10rem;
+    }
+
+    .receita-card h3 {
+        font-size: 1.3rem;
+    }
+
+    .receita-detalhes {
+        padding: 1rem;
+        text-align: left; /* Melhora a leitura em colunas estreitas */
+    }
+
+    .receita-detalhes p,
+    .receita-detalhes ul {
+        font-size: 1.25rem;
+    }
+}
+
+/* Telas muito pequenas / compactas (até 360px) */
+@media (max-width: 360px) {
+    main.container {
+        margin: .5rem;
+        padding: .5rem;
+    }
+
+    main h1 {
+        font-size: 1.45rem;
+    }
+
+    .procurar-form {
+        padding: 8px;
+    }
+
+    .procurar-input,
+    .procurar-botao {
+        font-size: 1.1rem;
+        padding: 8px;
+        letter-spacing: 0.5px;
+    }
+
+    .receita-card img {
+        height: 12.75rem;
+    }
+
+    .fechar-detalhes {
+        top: .5rem;
+        right: .5rem;
+        padding: .5rem 1rem;
+        font-size: 17.6px;
+    }
+
+    .receita-detalhes h2 {
+        font-size: 1.5rem;
+    }
+
+    .receita-detalhes h3 {
+        font-size: 1.3rem;
+    }
+
+    .receita-detalhes p,
+    .receita-detalhes ul {
+        font-size: 1.15rem;
     }
 }
